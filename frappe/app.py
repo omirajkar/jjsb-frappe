@@ -20,6 +20,7 @@ import frappe.api
 import frappe.async
 import frappe.utils.response
 import frappe.website.render
+import helpdesk.api
 from frappe.utils import get_site_name, get_site_path
 from frappe.middlewares import StaticDataMiddleware
 
@@ -68,6 +69,9 @@ def application(request):
 
 		elif frappe.request.path.startswith("/api/"):
 			response = frappe.api.handle()
+
+		elif frappe.request.path.startswith("/helpdesk/"):
+			response = helpdesk.api.handle()
 
 		elif frappe.request.path.startswith('/backups'):
 			response = frappe.utils.response.download_backup(request.path)

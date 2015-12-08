@@ -1,5 +1,7 @@
 // bind events
 
+{% include "helpdesk/js/todo.js" %}
+
 frappe.ui.form.on("ToDo", {
 	onload: function(frm) {
 		frm.set_query("reference_type", function(txt) {

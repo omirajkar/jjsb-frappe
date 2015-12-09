@@ -161,8 +161,17 @@ frappe.ui.to_do_dialog = function(opts){
 		primary_action_label: __("Add")
 	});
 
-	if(opts.doctype == "Issue")
-		dialog.fields_dict.assign_to.get_query = "helpdesk.py.user.user_query";
+	if(opts.doctype == "Issue"){
+		console.log(opts)
+		dialog.fields_dict.assign_to.get_query = function() {
+			return {
+				query: "helpdesk.py.user.user_query",
+				filters:{
+					'issue': opts.docname
+				}
+			}
+		}
+	}
 	else
 		dialog.fields_dict.assign_to.get_query = "frappe.core.doctype.user.user.user_query";
 	

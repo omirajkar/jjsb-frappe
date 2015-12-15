@@ -28,7 +28,8 @@ frappe.confirm = function(message, ifyes, ifno) {
 		primary_action: function() {
 			ifyes();
 			d.hide();
-		}
+		},
+		secondary_action_label: __("No")
 	});
 	d.show();
 
@@ -102,6 +103,12 @@ frappe.msgprint = function(msg, title) {
 		});
 		msg_dialog.msg_area = $('<div class="msgprint">')
 			.appendTo(msg_dialog.body);
+
+		msg_dialog.loading_indicator = $('<div class="loading-indicator text-center" \
+				style="margin: 15px;">\
+				<img src="/assets/frappe/images/ui/ajax-loader.gif"></div>')
+			.appendTo(msg_dialog.body);
+
 		msg_dialog.clear = function() {
 			msg_dialog.msg_area.empty();
 		}
@@ -116,6 +123,11 @@ frappe.msgprint = function(msg, title) {
 	if(msg_dialog.msg_area.html()) msg_dialog.msg_area.append("<hr>");
 
 	msg_dialog.msg_area.append(msg);
+	msg_dialog.loading_indicator.addClass("hide");
+
+	msg_dialog.show_loading = function() {
+		msg_dialog.loading_indicator.removeClass("hide");
+	}
 
 	// make msgprint always appear on top
 	msg_dialog.$wrapper.css("z-index", 2000);
@@ -133,6 +145,15 @@ frappe.hide_msgprint = function(instant) {
 		if(instant) {
 			msg_dialog.$wrapper.addClass("fade");
 		}
+	}
+}
+
+// update html in existing msgprint
+frappe.update_msgprint = function(html) {
+	if(!msg_dialog || (msg_dialog && !msg_dialog.$wrapper.is(":visible"))) {
+		frappe.msgprint(html);
+	} else {
+		msg_dialog.msg_area.html(html);
 	}
 }
 
@@ -202,23 +223,6 @@ function show_alert(txt, seconds) {
 		return false;
 	});
 
-	// if the window is in focus, hide it in 3 seconds
-	// but if the tab/window is minimised or not in focus,
-	// hide it in 3 seconds after gaining focus
-
-	function hide_after_delay() {
-		div.delay(seconds ? seconds * 1000 : 3000).fadeOut(300);
-	}
-
-	if ('hidden' in document && document.hidden) {
-		// we use a named function to be able to unbind the event
-		$(window).on("focus", function hide_on_focus() {
-			hide_after_delay();
-			$(window).unbind("focus", hide_on_focus);
-		});
-	} else {
-		hide_after_delay();
-	}
-
+	div.delay(seconds ? seconds * 1000 : 3000).fadeOut(300);
 	return div;
 }

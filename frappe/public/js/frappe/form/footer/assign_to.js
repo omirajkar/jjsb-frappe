@@ -176,7 +176,6 @@ frappe.ui.to_do_dialog = function(opts){
 	});
 
 	if(opts.doctype == "Issue"){
-		console.log(opts)
 		dialog.fields_dict.assign_to.get_query = function() {
 			return {
 				query: "helpdesk.py.user.user_query",

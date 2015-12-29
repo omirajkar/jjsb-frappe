@@ -105,6 +105,7 @@ frappe.ui.form.Share = Class.extend({
 	},
 	make_user_input: function() {
 		// make add-user input
+		me = this;
 		this.dialog.share_with = frappe.ui.form.make_control({
 			parent: $(this.dialog.body).find(".input-wrapper-add-share"),
 			df: {
@@ -115,12 +116,21 @@ frappe.ui.form.Share = Class.extend({
 				filters: {
 					"user_type": "System User",
 					"name": ["!=", user]
+				},
+				get_query: function() {
+					return {
+						query: "helpdesk.py.user.user_query",
+						filters: {
+							'user': user,
+							'doctype': me.frm.doctype,
+							'issue': me.frm.docname
+						}
+					}
 				}
 			},
 			only_input: true,
-			render_input: true
+			render_input: true,
 		});
-
 	},
 	add_share_button: function() {
 		var me = this, d = this.dialog;

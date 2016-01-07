@@ -7,8 +7,8 @@ Before creating Models, we must create Roles so that we can set permissions on t
 
 To create a new Role, go to:
 
-> Core > Documents > Role > New
+> Setup > Users > Role > New
 
-<img class="screenshot" alt="Adding Roles" src="{{url_prefix}}/assets/img/roles_creation.png">
+<img class="screenshot" alt="Adding Roles" src="{{docs_base_url}}/assets/img/roles_creation.png">
 
 {next}

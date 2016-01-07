@@ -125,7 +125,7 @@ frappe.ui.form.Toolbar = Class.extend({
 		}
 
 		// email
-		if(frappe.model.can_email(null, me.frm)) {
+		if(frappe.model.can_email(null, me.frm) && me.frm.doc.docstatus < 2) {
 			this.page.add_menu_item(__("Email"), function() {
 				me.frm.email_doc();}, true);
 		}
@@ -295,10 +295,10 @@ frappe.ui.form.Toolbar = Class.extend({
 		if(has_workflow) {
 			return;
 		} else if(docstatus==1 && p[CANCEL]) {
-			this.page.set_secondary_action('Cancel', function() {
+			this.page.set_secondary_action(__('Cancel'), function() {
 				me.frm.savecancel(this) }, 'icon-ban-circle');
 		} else if(docstatus==2 && p[AMEND]) {
-			this.page.set_secondary_action('Amend', function() {
+			this.page.set_secondary_action(__('Amend'), function() {
 				me.frm.amend_doc() }, 'icon-pencil', true);
 		}
 	},

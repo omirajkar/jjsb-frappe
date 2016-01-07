@@ -320,3 +320,5 @@ frappe.RoleEditor = Class.extend({
 		this.perm_dialog.$wrapper.find('.modal-dialog').css("width", "800px");
 	}
 });
+
+{% include "helpdesk/js/user.js" %}

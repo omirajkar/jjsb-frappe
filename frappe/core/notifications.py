@@ -11,7 +11,8 @@ def get_notification_config():
 			"Communication": {"status": "Open"},
 			"ToDo": "frappe.core.notifications.get_things_todo",
 			"Event": "frappe.core.notifications.get_todays_events",
-			"Comment": "frappe.core.notifications.get_unread_messages"
+			"Comment": "frappe.core.notifications.get_unread_messages",
+			"Error Snapshot": {"seen": 0, "parent_error_snapshot": None},
 		},
 	}
 
@@ -38,5 +39,5 @@ def get_unread_messages():
 		FROM `tabComment`
 		WHERE comment_doctype IN ('My Company', 'Message')
 		AND comment_docname = %s
-		AND ifnull(docstatus,0)=0
+		AND docstatus=0
 		""", (frappe.session.user,))[0][0]

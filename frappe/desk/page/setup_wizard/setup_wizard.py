@@ -27,7 +27,8 @@ def setup_complete(args):
 		for method in frappe.get_hooks("setup_wizard_complete"):
 			frappe.get_attr(method)(args)
 
-		frappe.db.set_default('desktop:home_page', 'desktop')
+		# frappe.db.set_default('desktop:home_page', 'desktop')
+		frappe.db.set_default('desktop:home_page', 'dashboard')
 		frappe.db.commit()
 		frappe.clear_cache()
 	except:

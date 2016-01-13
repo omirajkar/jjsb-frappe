@@ -50,6 +50,9 @@ class DocType(Document):
 
 		self.make_amendable()
 
+		if self.istable:
+			self.allow_import = 0
+
 	def check_developer_mode(self):
 		"""Throw exception if not developer mode or via patch"""
 		if frappe.flags.in_patch:
@@ -86,6 +89,9 @@ class DocType(Document):
 							d.fieldname = d.fieldname + '1'
 					else:
 						d.fieldname = d.fieldtype.lower().replace(" ","_") + "_" + str(d.idx)
+
+				# fieldnames should be lowercase
+				d.fieldname = d.fieldname.lower()
 
 	def validate_series(self, autoname=None, name=None):
 		"""Validate if `autoname` property is correctly set."""
@@ -271,7 +277,7 @@ def validate_fields(meta):
 			frappe.throw(_("Max width for type Currency is 100px in row {0}").format(d.idx))
 
 	def check_in_list_view(d):
-		if d.in_list_view and d.fieldtype!="Image" and (d.fieldtype in no_value_fields):
+		if d.in_list_view and (d.fieldtype in no_value_fields):
 			frappe.throw(_("'In List View' not allowed for type {0} in row {1}").format(d.fieldtype, d.idx))
 
 	def check_dynamic_link_options(d):
@@ -296,12 +302,13 @@ def validate_fields(meta):
 			if d.fieldtype not in ("Data", "Link", "Read Only"):
 				frappe.throw(_("Fieldtype {0} for {1} cannot be unique").format(d.fieldtype, d.label))
 
-			has_non_unique_values = frappe.db.sql("""select `{fieldname}`, count(*)
-				from `tab{doctype}` group by `{fieldname}` having count(*) > 1 limit 1""".format(
-				doctype=d.parent, fieldname=d.fieldname))
+			if not d.get("__islocal"):
+				has_non_unique_values = frappe.db.sql("""select `{fieldname}`, count(*)
+					from `tab{doctype}` group by `{fieldname}` having count(*) > 1 limit 1""".format(
+					doctype=d.parent, fieldname=d.fieldname))
 
-			if has_non_unique_values and has_non_unique_values[0][0]:
-				frappe.throw(_("Field '{0}' cannot be set as Unique as it has non-unique values").format(d.label))
+				if has_non_unique_values and has_non_unique_values[0][0]:
+					frappe.throw(_("Field '{0}' cannot be set as Unique as it has non-unique values").format(d.label))
 
 		if d.search_index and d.fieldtype in ("Text", "Long Text", "Small Text", "Code", "Text Editor"):
 			frappe.throw(_("Fieldtype {0} for {1} cannot be indexed").format(d.fieldtype, d.label))

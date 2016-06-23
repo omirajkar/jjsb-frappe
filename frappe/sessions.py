@@ -51,16 +51,18 @@ def clear_global_cache():
 		"app_modules", "module_app", "time_zone", "notification_config"])
 	frappe.setup_module_map()
 
-def clear_sessions(user=None, keep_current=False):
+def clear_sessions(user=None, keep_current=False, device=None):
 	if not user:
 		user = frappe.session.user
 
-	for sid in frappe.db.sql("""select sid from tabSessions where user=%s and device=%s""",
-		(user, frappe.session.data.device or "desktop")):
-		if keep_current and frappe.session.sid==sid[0]:
+	if not device:
+		device = frappe.session.data.device or "desktop"
+
+	for sid in frappe.db.sql_list("""select sid from tabSessions where user=%s and device=%s""", (user, device)):
+		if keep_current and frappe.session.sid==sid:
 			continue
 		else:
-			delete_session(sid[0])
+			delete_session(sid)
 
 def delete_session(sid=None, user=None):
 	if not user:
@@ -146,7 +148,7 @@ def generate_csrf_token():
 	# and it leads to invalid request in the current tab
 	frappe.publish_realtime(event="csrf_generated",
 		message={"sid": frappe.local.session.sid, "csrf_token": frappe.local.session.data.csrf_token},
-		user=frappe.session.user)
+		user=frappe.session.user, after_commit=True)
 
 class Session:
 	def __init__(self, user, resume=False, full_name=None, user_type=None):

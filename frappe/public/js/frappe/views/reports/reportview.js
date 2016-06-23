@@ -247,7 +247,7 @@ frappe.views.ReportView = frappe.ui.Listing.extend({
 						"_user_tags": "Tag",
 						"_comments": "Comment",
 						"_assign": "Assign",
-						"_starred_by": "StarredBy",
+						"_liked_by": "LikedBy",
 					}[docfield.fieldname] || docfield.fieldtype;
 
 					if(docfield.fieldtype==="Link" && docfield.fieldname!=="name") {
@@ -353,7 +353,6 @@ frappe.views.ReportView = frappe.ui.Listing.extend({
 			title: __("Edit") + " " + __(docfield.label),
 			fields: [docfield, {"fieldtype": "Button", "label": "Update"}],
 		});
-		d.get_input(docfield.fieldname).val(row[docfield.fieldname]);
 		d.get_input("update").on("click", function() {
 			var args = {
 				doctype: docfield.parent,
@@ -393,6 +392,7 @@ frappe.views.ReportView = frappe.ui.Listing.extend({
 			});
 		});
 		d.show();
+		d.set_input(docfield.fieldname, row[docfield.fieldname]);
 	},
 
 	set_data: function() {

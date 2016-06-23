@@ -65,6 +65,7 @@ def get_allowed_functions_for_jenv():
 			"get_doc": frappe.get_doc,
 			"db": {
 				"get_value": frappe.db.get_value,
+				"get_default": frappe.db.get_default,
 			},
 			"get_list": frappe.get_list,
 			"get_all": frappe.get_all,
@@ -95,6 +96,7 @@ def get_jloader():
 		from jinja2 import ChoiceLoader, PackageLoader, PrefixLoader
 
 		apps = frappe.get_installed_apps(sort=True)
+
 		apps.reverse()
 
 		frappe.local.jloader = ChoiceLoader(

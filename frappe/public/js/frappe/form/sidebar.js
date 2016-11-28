@@ -97,10 +97,12 @@ frappe.ui.form.Sidebar = Class.extend({
 		});
 	},
 	make_assignments: function() {
-		this.frm.assign_to = new frappe.ui.form.AssignTo({
-			parent: this.sidebar.find(".form-assignments"),
-			frm: this.frm
-		});
+		if(!inList(user_roles, "Branch User")) {
+			this.frm.assign_to = new frappe.ui.form.AssignTo({
+				parent: this.sidebar.find(".form-assignments"),
+				frm: this.frm
+			});
+		}
 	},
 	make_shared: function() {
 		this.frm.shared = new frappe.ui.form.Share({

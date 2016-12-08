@@ -166,7 +166,8 @@ class User(Document):
 		self.db_set("reset_password_key", key)
 		link = get_url("/update-password?key=" + key)
 
-		self.send_login_mail(_("Verify Your Account"), "templates/emails/new_user.html",
+	#	self.send_login_mail(_("Verify Your Account"), "templates/emails/new_user.html",
+		self.send_login_mail(_("Welcome to JJSB Helpdesk"),"templates/emails/new_user.html",
 			{"link": link, "site_url": get_url()})
 
 	def send_login_mail(self, subject, template, add_args):
@@ -175,7 +176,8 @@ class User(Document):
 		from frappe.utils import get_url
 
 		mail_titles = frappe.get_hooks().get("login_mail_title", [])
-		title = frappe.db.get_default('company') or (mail_titles and mail_titles[0]) or ""
+		title ="Jalgaon Janta Sahakari Bank"
+		#frappe.db.get_default('company') or (mail_titles and mail_titles[0]) or ""
 
 		full_name = get_user_fullname(frappe.session['user'])
 		if full_name == "Guest":

@@ -1,12 +1,13 @@
 <h3>{{ title }}</h3>
-<p>{{_("Dear")}} {{ first_name }}{% if last_name %} {{ last_name}}{% endif %},</p>
-<p>{{_("A new account has been created for you at {0}").format(site_url)}}.</p>
+<p>{{_("Hello")}} {{ first_name }}{% if last_name %} {{ last_name}}{% endif %},</p>
+<p>{{_("A new account has been created for you at JJSB Data Center Support helpdesk at {0}").format(site_url)}}.</p>
 <p>{{_("Your login id is")}}: <b>{{ user }}</b>
-<p>{{_("Click on the link below to complete your registration and set a new password")}}.</p>
-<p><b><a href="{{ link }}">{{_("Complete Registration")}}</a></b></p>
+<p>{{_("Click on the link below to ")}}<b><a href="{{ link }}">{{_("Complete Registration ")}}</a></b>{{_("and set a new password and gain access to helpdesk ticketing system for generating your new ticket and provide complete archives and history of all your support requests.")}}</p>
+<!--<p><b><a href="{{ link }}">{{_("Complete Registration")}}</a></b></p> -->
 <br>
 <p>{{_("Thank you")}},<br>
-{{ user_fullname }}</p>
+{{"JJSB Helpdesk Ticketing System"}} </p>
+<!--{{ user_fullname }}</p> -->
 
 <br>
 <p style="font-size: 85%;">{{_("You can also copy-paste this link in your browser")}} <a href="{{ link }}">{{ link }}</a></p>
